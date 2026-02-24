@@ -1,0 +1,89 @@
+---
+/*
+  PostCard — 카드 스트립 안의 단일 카드
+  Usage:
+    <PostCard post={p} />  (collection entry)
+    <PostCard href="/custom" title="..." summary="..." label="..." date="..." />
+*/
+interface Props {
+  post?: any;          // Astro content collection entry
+  href?: string;
+  title?: string;
+  summary?: string;
+  label?: string;
+  date?: string;
+  tags?: string[];
+  variant?: "default" | "featured"; // featured = gold accent
+}
+
+const { post, href, title, summary, label, date, tags, variant = "default" } = Astro.props;
+
+const _href    = href    ?? `/${post.collection}/${post.slug}/`;
+const _title   = title   ?? post?.data?.title;
+const _summary = summary ?? post?.data?.summary;
+const _date    = date    ?? post?.data?.date?.toISOString().slice(0, 10);
+const _tags    = tags    ?? post?.data?.tags;
+const _label   = label   ?? [
+  post?.collection?.toUpperCase(),
+  post?.data?.type?.toUpperCase(),
+].filter(Boolean).join(" · ");
+---
+<a href={_href} class:list={["cell", { featured: variant === "featured" }]}>
+  <div class="card-type">{_label}</div>
+  <div class="card-title">{_title}</div>
+  {_summary && <div class="card-summary">{_summary}</div>}
+  <div class="card-foot">
+    {_date && <span class="card-date">{_date}</span>}
+    {_tags?.length && (
+      <div class="card-tags">
+        {_tags.slice(0, 2).map((t: string) => <span class="tag">{t}</span>)}
+      </div>
+    )}
+  </div>
+</a>
+
+<style>
+.card-type {
+  font-family: 'EB Garamond', serif;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--subtle);
+  margin-bottom: 10px;
+}
+.featured .card-type { color: var(--gold); }
+
+.card-title {
+  font-family: 'Noto Serif KR', serif;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+.card-summary {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 300;
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--muted);
+  flex: 1;
+}
+.card-foot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+.card-date {
+  font-family: 'EB Garamond', serif;
+  font-size: 12px;
+  color: var(--subtle);
+  letter-spacing: 0.03em;
+}
+.card-tags {
+  display: flex;
+  gap: 5px;
+}
+</style>

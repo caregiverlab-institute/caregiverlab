@@ -1,9 +1,146 @@
-<footer class="rule" style="margin-top:44px;">
-    <div class="container" style="padding:18px 18px 30px 18px;">
-      <div class="muted" style="font-size:14px; line-height:1.6;">
-        <div>© 간병연구소</div>
-        <div>본 사이트의 자료는 일반 정보 제공 목적이며, 개별 상황에 대한 판단은 별도 확인이 필요합니다.</div>
-        <div>데이터 출처/집계 방식은 각 문서 하단에 명시합니다.</div>
+---
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="footer-inner container-wide">
+    <!-- Top row -->
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-wordmark">
+          <span class="wk">간병연구소</span>
+          <span class="we">CaregiverLab</span>
+        </div>
+        <p class="footer-tagline">간병의 기준을 만듭니다.</p>
+        <p class="footer-desc">
+          간병 현장의 데이터와 제도 정보를 연구·정리합니다.<br />
+          출처와 집계 방법을 명시한 브리프·가이드를 제공합니다.
+        </p>
       </div>
+
+      <nav class="footer-nav" aria-label="푸터 내비게이션">
+        <div class="footer-nav-group">
+          <div class="footer-nav-label">콘텐츠</div>
+          <a href="/research/">리서치</a>
+          <a href="/insights/">Insights</a>
+        </div>
+        <div class="footer-nav-group">
+          <div class="footer-nav-label">연구소</div>
+          <a href="/about/">About</a>
+          <a href="/contact/">문의</a>
+        </div>
+      </nav>
     </div>
-  </footer>
+
+    <!-- Divider -->
+    <div class="footer-rule"></div>
+
+    <!-- Bottom row -->
+    <div class="footer-bottom">
+      <p class="footer-copy">
+        © {year} 간병연구소. 모든 문서의 무단 전재·재배포를 금합니다.
+      </p>
+      <p class="footer-disclaimer">
+        본 사이트의 정보는 참고용이며, 법적·의료적 판단의 근거로 사용할 수 없습니다.
+      </p>
+    </div>
+  </div>
+</footer>
+
+<style>
+.site-footer {
+  background: var(--ink);
+  color: rgba(255,255,255,0.55);
+  margin-top: auto;
+}
+.footer-inner { padding: 56px 24px 32px; }
+.footer-top {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 40px;
+  align-items: start;
+}
+.footer-wordmark {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.wk {
+  font-family: 'Noto Serif KR', serif;
+  font-weight: 600;
+  font-size: 17px;
+  color: #fff;
+}
+.we {
+  font-family: 'EB Garamond', serif;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.4);
+}
+.footer-tagline {
+  font-family: 'EB Garamond', serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+  margin-bottom: 12px;
+}
+.footer-desc {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.8;
+  color: rgba(255,255,255,0.4);
+}
+.footer-nav {
+  display: flex;
+  gap: 40px;
+}
+.footer-nav-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 100px;
+}
+.footer-nav-label {
+  font-family: 'EB Garamond', serif;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 2px;
+}
+.footer-nav-group a {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.55);
+  text-decoration: none;
+  transition: color 0.14s;
+}
+.footer-nav-group a:hover { color: rgba(255,255,255,0.9); }
+.footer-rule {
+  border: none;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  margin: 40px 0 20px;
+}
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.footer-copy, .footer-disclaimer {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 12px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.3);
+  line-height: 1.6;
+}
+
+@media (max-width: 640px) {
+  .footer-top { grid-template-columns: 1fr; gap: 32px; }
+  .footer-nav { flex-wrap: wrap; }
+  .footer-bottom { flex-direction: column; gap: 8px; }
+}
+</style>

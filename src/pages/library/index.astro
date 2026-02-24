@@ -1,0 +1,161 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import { getCollection } from "astro:content";
+
+const all = (await getCollection("library", p => !p.data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const typeLabel: Record<string, string> = {
+  law: "법령", policy: "정책", form: "서식", data: "통계", external: "외부자료",
+};
+---
+<BaseLayout
+  title="자료실 — 간병연구소"
+  description="간병 관련 법령, 정책, 서식, 공공 통계 링크를 정리한 자료실입니다."
+>
+  <Header />
+  <main>
+    <div class="page-header">
+      <div class="container">
+        <div class="eyebrow" style="margin-bottom: 14px;">Library</div>
+        <h1 class="page-title">자료실</h1>
+        <p class="page-lead">
+          간병 관련 법령·정책·서식·공공 통계를 한 곳에 모았습니다.<br />
+          모든 링크에 원출처와 최종 확인 일자를 표기합니다.
+        </p>
+      </div>
+    </div>
+
+    <div class="container" style="padding-top: 0; padding-bottom: 72px;">
+      {all.length > 0 ? (
+        <div class="lib-list">
+          {all.map(p => (
+            <a
+              href={p.data.externalUrl ?? `/library/${p.slug}/`}
+              class="lcard"
+              target={p.data.externalUrl ? "_blank" : undefined}
+              rel={p.data.externalUrl ? "noopener noreferrer" : undefined}
+            >
+              <div>
+                <div class="lcard-meta">
+                  <span class="tag">{typeLabel[p.data.type] ?? p.data.type}</span>
+                  {p.data.publisher && <span class="label">{p.data.publisher}</span>}
+                </div>
+                <div class="lcard-title">{p.data.title}</div>
+                {p.data.summary && <div class="lcard-summary">{p.data.summary}</div>}
+              </div>
+              <div class="lcard-right">
+                <span class="label">{p.data.date.toISOString().slice(0, 10)}</span>
+                <span class="lcard-arrow">
+                  {p.data.externalUrl ? "↗" : "→"}
+                </span>
+              </div>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <div class="empty-state">
+          <div class="empty-icon">文</div>
+          <p>자료실 항목이 곧 추가됩니다.</p>
+        </div>
+      )}
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+.page-header {
+  background: var(--cream);
+  border-bottom: 1px solid var(--bd);
+  padding: 52px 0 40px;
+  position: relative;
+}
+.page-header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--gold) 55%, transparent);
+}
+.page-title {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(22px, 3vw, 30px);
+  color: var(--ink);
+  margin-bottom: 12px;
+}
+.page-lead {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--muted);
+}
+.lib-list {
+  border: 1px solid var(--bd);
+  border-top: none;
+  border-radius: 0 0 var(--r) var(--r);
+  overflow: hidden;
+}
+.lcard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 22px;
+  border-bottom: 1px solid var(--bd);
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.13s;
+}
+.lcard:last-child { border-bottom: none; }
+.lcard:hover { background: var(--cream); }
+.lcard-meta { display: flex; gap: 8px; align-items: center; margin-bottom: 6px; }
+.lcard-title {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+.lcard-summary {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--muted);
+  line-height: 1.55;
+}
+.lcard-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.lcard-arrow {
+  font-family: var(--roman);
+  font-size: 18px;
+  color: var(--subtle);
+  transition: color 0.13s;
+}
+.lcard:hover .lcard-arrow { color: var(--accent); }
+.empty-state {
+  text-align: center;
+  padding: 64px 20px;
+  border: 1px dashed var(--bd);
+  border-top: none;
+  border-radius: 0 0 var(--r) var(--r);
+  font-family: var(--serif);
+}
+.empty-icon {
+  font-size: 32px;
+  color: var(--subtle);
+  margin-bottom: 12px;
+}
+.empty-state p {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--muted);
+}
+</style>

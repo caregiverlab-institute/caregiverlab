@@ -1,0 +1,235 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import PostCard from "../../components/PostCard.astro";
+import { getCollection } from "astro:content";
+
+const all = (await getCollection("research", p => !p.data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+// 타입별 분류
+const types: Record<string, string> = {
+  brief:  "정책 브리프",
+  data:   "데이터 분석",
+  report: "조사·보고",
+  guide:  "실무 가이드",
+  review: "제도 리뷰",
+};
+
+const grouped: Record<string, typeof all> = {};
+for (const p of all) {
+  const t = p.data.type;
+  if (!grouped[t]) grouped[t] = [];
+  grouped[t].push(p);
+}
+
+// 현재 타입 필터 (쿼리파람 없으면 전체)
+const typeParam = Astro.url.searchParams.get("type") ?? "all";
+const displayed = typeParam === "all" ? all : all.filter(p => p.data.type === typeParam);
+---
+<BaseLayout
+  title="리서치 — 간병연구소"
+  description="간병비·인력·제도·정책에 관한 연구 브리프와 데이터 분석 자료입니다."
+>
+  <Header />
+  <main>
+
+    <div class="page-header">
+      <div class="container">
+        <div class="ph-inner">
+          <div>
+            <div class="eyebrow" style="margin-bottom: 14px;">Research</div>
+            <h1 class="page-title">리서치 브리프</h1>
+            <p class="page-lead">
+              간병비·인력·제도·정책 이슈를 데이터와 법령 분석으로 정리합니다.<br />
+              모든 문서에 출처와 집계 방식을 명시합니다.
+            </p>
+          </div>
+          <div class="ph-count">
+            <div class="count-num">{all.length}</div>
+            <div class="count-label">공개 문서</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container" style="padding-top: 0; padding-bottom: 72px;">
+
+      <!-- Type filter (정적 링크로 구현 — JS 없이도 동작) -->
+      <div class="filter-row">
+        <a href="/research/" class:list={["filter-btn", { active: typeParam === "all" }]}>
+          전체 ({all.length})
+        </a>
+        {Object.entries(types).filter(([k]) => grouped[k]?.length).map(([k, v]) => (
+          <a
+            href={`/research/?type=${k}`}
+            class:list={["filter-btn", { active: typeParam === k }]}
+          >
+            {v} ({grouped[k]?.length ?? 0})
+          </a>
+        ))}
+      </div>
+
+      <!-- Cards -->
+      {displayed.length > 0 ? (
+        <div class="research-list">
+          {displayed.map(p => (
+            <a href={`/research/${p.slug}/`} class="rcard">
+              <div class="rcard-meta">
+                <span class="label">{types[p.data.type] ?? p.data.type.toUpperCase()}</span>
+                <span class="label" style="color: var(--subtle);">·  {p.data.date.toISOString().slice(0,10)}</span>
+                {p.data.source && <span class="label" style="color: var(--subtle);">출처: {p.data.source}</span>}
+              </div>
+              <div class="rcard-title">{p.data.title}</div>
+              {p.data.summary && <div class="rcard-summary">{p.data.summary}</div>}
+              {p.data.tags?.length > 0 && (
+                <div class="rcard-tags">
+                  {p.data.tags.slice(0, 4).map((t: string) => <span class="tag">{t}</span>)}
+                </div>
+              )}
+            </a>
+          ))}
+        </div>
+      ) : (
+        <div class="empty">해당 유형의 문서가 없습니다.</div>
+      )}
+
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+.page-header {
+  background: var(--cream);
+  border-bottom: 1px solid var(--bd);
+  padding: 52px 0 40px;
+  position: relative;
+}
+.page-header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--gold) 55%, transparent);
+}
+.ph-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+}
+.page-title {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(22px, 3vw, 30px);
+  color: var(--ink);
+  margin-bottom: 12px;
+}
+.page-lead {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--muted);
+}
+.ph-count {
+  text-align: right;
+  flex-shrink: 0;
+}
+.count-num {
+  font-family: var(--roman);
+  font-size: 36px;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1;
+}
+.count-label {
+  font-family: var(--roman);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--subtle);
+  margin-top: 4px;
+}
+.filter-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 24px 0 20px;
+  border-bottom: 1px solid var(--bd);
+  margin-bottom: 0;
+}
+.filter-btn {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--muted);
+  padding: 5px 12px;
+  border: 1px solid var(--bd);
+  border-radius: 100px;
+  text-decoration: none;
+  transition: all 0.13s;
+}
+.filter-btn:hover { background: var(--cream); color: var(--ink); border-color: var(--ink-2); }
+.filter-btn.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+.research-list {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--bd);
+  border-top: none;
+  border-radius: 0 0 var(--r) var(--r);
+  overflow: hidden;
+}
+.rcard {
+  display: block;
+  padding: 22px 22px 20px;
+  border-bottom: 1px solid var(--bd);
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.13s;
+  position: relative;
+}
+.rcard:last-child { border-bottom: none; }
+.rcard:hover { background: var(--cream); }
+.rcard::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: var(--accent);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.18s ease;
+}
+.rcard:hover::before { transform: scaleY(1); }
+.rcard-meta {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.rcard-title {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.rcard-summary {
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.65;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.rcard-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+.empty {
+  padding: 40px 0;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--muted);
+}
+</style>

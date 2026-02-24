@@ -1,0 +1,318 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+---
+<BaseLayout
+  title="About — 간병연구소"
+  description="간병연구소는 간병 현장의 데이터와 제도 정보를 정리하여, 더 나은 의사결정을 위한 브리프를 제공합니다."
+>
+  <Header />
+  <main>
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="container-prose">
+        <div class="eyebrow" style="margin-bottom: 16px;">About CaregiverLab</div>
+        <h1 class="page-title">간병의 기준을 만듭니다.</h1>
+        <p class="page-lead">
+          2018년 설립. 간병 현장의 데이터와 제도 정보를 연구·정리하는 독립 채널입니다.
+        </p>
+      </div>
+    </div>
+
+    <div class="container-prose" style="padding-top: 52px; padding-bottom: 96px;">
+
+      <!-- ① Mission -->
+      <section class="ab-section">
+        <div class="ab-label">Mission</div>
+        <h2 class="ab-h2">왜 존재하는가</h2>
+        <p class="ab-body">
+          고령사회는 새로운 질문을 던집니다.<br />
+          누가 간병하는가, 얼마가 드는가, 어떤 제도가 이를 뒷받침하는가.
+        </p>
+        <p class="ab-body">
+          이 질문에 답하기 위해,<br />
+          간병연구소는 간병 현장의 데이터를 정리하고 제도를 해석합니다.
+        </p>
+        <p class="ab-body">
+          간병 가족·기업·정책 담당자가<br />
+          의사결정에 참고할 수 있는 근거 기반 문서를 제공합니다.
+        </p>
+      </section>
+
+      <!-- ② Field Data Partnership -->
+      <section class="ab-section">
+        <div class="ab-label">Field Data Partnership</div>
+        <h2 class="ab-h2">현장 데이터 기반</h2>
+        <p class="ab-body">
+          간병연구소(Caregiver Lab)의 일부 실증 데이터는
+          현장 운영 기관에서 집계된 자료를 기반으로 활용될 수 있습니다.
+        </p>
+        <p class="ab-body">
+          예를 들어, 간병비 및 인력 운영 관련 데이터의 경우
+          서울간병인협회 등 실제 서비스 운영 기관에서 수집된
+          현장 자료를 참고할 수 있습니다.
+        </p>
+        <p class="ab-body">
+          연구 설계 및 분석, 평가 리포트 작성은
+          간병연구소(Caregiver Lab)에서 독립적으로 수행됩니다.
+        </p>
+        <!-- Archive -->
+        <div class="ab-archive">
+          <div class="ab-archive-left">
+            <div class="ab-archive-label">Archive · Since 2018</div>
+            <div class="ab-archive-title">간병연구소의 초기 기록은 여기 있습니다</div>
+            <p class="ab-archive-body">
+              서울간병인협회 블로그에는 2018년부터 축적된 간병 현장 기록이 보존되어 있습니다.
+              간병일지 양식, 의사소통 가이드, 호스피스 케어 등
+              초기 실무노트를 확인할 수 있습니다.
+            </p>
+          </div>
+          <a
+            href="https://www.seoulhr.com/blog"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="ab-archive-link"
+          >
+            아카이브 보기 <span>↗</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- ③ Outputs -->
+      <section class="ab-section" style="border-bottom: none; padding-bottom: 0;">
+        <div class="ab-label">Outputs</div>
+        <h2 class="ab-h2">무엇을 제공하는가</h2>
+        <p class="ab-body">
+          협업 목적에 따라 다음과 같은 형태의 문서를 제공합니다.
+        </p>
+        <div class="output-grid">
+          <div class="output-card">
+            <div class="oc-num">01</div>
+            <div class="oc-title">1-Page Brief</div>
+            <div class="oc-desc">핵심 수치와 해석을 요약한 의사결정 참고 자료</div>
+          </div>
+          <div class="output-card">
+            <div class="oc-num">02</div>
+            <div class="oc-title">Evaluation Report</div>
+            <div class="oc-desc">현장 데이터 기반의 분석 문서</div>
+          </div>
+          <div class="output-card">
+            <div class="oc-num">03</div>
+            <div class="oc-title">Checklist / Guide</div>
+            <div class="oc-desc">간병 가족 및 실무 담당자가 활용 가능한 실행 자료</div>
+          </div>
+        </div>
+
+        <div class="cta-row">
+          <a href="/contact/" class="btn btn-primary">자료 요청 · 협업 문의 →</a>
+          <a href="/research/" class="btn btn-ghost">공개 자료 보기</a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+.page-header {
+  background: var(--cream);
+  border-bottom: 1px solid var(--bd);
+  padding: 56px 0 44px;
+  position: relative;
+}
+.page-header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--gold) 55%, transparent);
+}
+.page-title {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(24px, 3.5vw, 32px);
+  color: var(--ink);
+  margin-bottom: 14px;
+  line-height: 1.45;
+}
+.page-lead {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--muted);
+}
+
+/* ── Sections ── */
+.ab-section {
+  padding-bottom: 52px;
+  margin-bottom: 52px;
+  border-bottom: 1px solid var(--bd-light);
+}
+.ab-label {
+  font-family: var(--roman);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+.ab-h2 {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 22px;
+  color: var(--ink);
+  margin-bottom: 20px;
+  letter-spacing: -0.01em;
+}
+.ab-body {
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.9;
+  color: var(--ink-2);
+  margin-bottom: 1em;
+  max-width: 520px;
+}
+.ab-body:last-of-type { margin-bottom: 0; }
+
+/* ── Partner Link ── */
+.ab-partner-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 24px;
+  padding: 16px 20px;
+  border: 1px solid var(--bd);
+  border-left: 3px solid var(--gold);
+  border-radius: var(--r);
+  background: var(--cream);
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.14s, border-color 0.14s;
+}
+.ab-partner-link:hover { background: var(--cream-2); border-color: var(--gold); }
+.apl-label {
+  font-family: var(--roman);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--subtle);
+  margin-bottom: 5px;
+}
+.apl-name {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--ink);
+}
+.apl-arrow {
+  font-family: var(--roman);
+  font-size: 20px;
+  color: var(--subtle);
+  flex-shrink: 0;
+  transition: transform 0.13s, color 0.13s;
+}
+.ab-partner-link:hover .apl-arrow {
+  transform: translate(2px, -2px);
+  color: var(--accent);
+}
+
+/* ── Output Grid ── */
+.output-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid var(--bd);
+  border-radius: var(--r);
+  overflow: hidden;
+  margin-top: 24px;
+  margin-bottom: 32px;
+}
+.output-card {
+  padding: 22px 20px 20px;
+  border-right: 1px solid var(--bd);
+}
+.output-card:last-child { border-right: none; }
+.oc-num {
+  font-family: var(--roman);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+.oc-title {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+.oc-desc {
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.65;
+  color: var(--muted);
+}
+
+.cta-row { display: flex; gap: 10px; flex-wrap: wrap; }
+
+/* Archive in about */
+.ab-archive {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 16px;
+  padding: 20px 24px;
+  background: var(--ink);
+  border-radius: var(--r);
+}
+.ab-archive-label {
+  font-family: var(--roman);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+.ab-archive-title {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 15px;
+  color: #fff;
+  margin-bottom: 7px;
+}
+.ab-archive-body {
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.5);
+  max-width: 380px;
+}
+.ab-archive-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.7);
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 9px 18px;
+  border-radius: var(--r);
+  white-space: nowrap;
+  flex-shrink: 0;
+  text-decoration: none;
+  transition: color 0.14s, border-color 0.14s;
+}
+.ab-archive-link:hover { color: #fff; border-color: rgba(255,255,255,0.5); }
+
+@media (max-width: 560px) {
+  .output-grid { grid-template-columns: 1fr; }
+  .output-card { border-right: none; border-bottom: 1px solid var(--bd); }
+  .output-card:last-child { border-bottom: none; }
+  .ab-archive { flex-direction: column; align-items: flex-start; gap: 16px; }
+}
+</style>

@@ -1,0 +1,35 @@
+---
+import PostLayout from "../../layouts/PostLayout.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("insights", p => !p.data.draft);
+  return posts.map(p => ({ params: { slug: p.slug }, props: { entry: p } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+
+// 인터뷰일 경우 라벨에 직종 포함
+const typeLabel: Record<string, string> = {
+  interview: "인터뷰",
+  analysis:  "제도 해석",
+  outlook:   "전망",
+  note:      "노트",
+};
+const label = entry.data.interviewee
+  ? `인터뷰 · ${entry.data.interviewee}${entry.data.profession ? ` (${entry.data.profession})` : ""}`
+  : typeLabel[entry.data.type];
+---
+<PostLayout
+  title={entry.data.title}
+  description={entry.data.description ?? entry.data.summary ?? ""}
+  date={entry.data.date}
+  updatedDate={entry.data.updatedDate}
+  tags={entry.data.tags}
+  type={label}
+  collection="insights"
+  summary={entry.data.summary}
+>
+  <Content />
+</PostLayout>

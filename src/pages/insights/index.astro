@@ -1,0 +1,272 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import { getCollection } from "astro:content";
+
+const all = (await getCollection("insights", p => !p.data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const typeLabel: Record<string, string> = {
+  interview: "인터뷰",
+  analysis:  "제도 해석",
+  outlook:   "전망",
+  note:      "노트",
+};
+
+const typeParam = Astro.url.searchParams.get("type") ?? "all";
+const displayed = typeParam === "all" ? all : all.filter(p => p.data.type === typeParam);
+---
+<BaseLayout
+  title="Insights — 간병연구소"
+  description="전문가 인터뷰, 제도 해석, 향후 전망. 간병연구소의 독자적 분석을 담습니다."
+>
+  <Header />
+  <main>
+
+    <div class="page-header">
+      <div class="container">
+        <div class="ph-inner">
+          <div>
+            <div class="eyebrow" style="margin-bottom: 14px;">Insights</div>
+            <h1 class="page-title">인터뷰 · 해석 · 전망</h1>
+            <p class="page-lead">
+              현장 전문가 인터뷰, 제도에 대한 독자적 해석,
+              간병 분야의 향후 전망을 다룹니다.
+            </p>
+          </div>
+          <div class="ph-count">
+            <div class="count-num">{all.length}</div>
+            <div class="count-label">Published</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container" style="padding-bottom: 80px;">
+
+      <!-- Type filter -->
+      <div class="filter-row">
+        <a href="/insights/" class:list={["filter-btn", { active: typeParam === "all" }]}>
+          전체 ({all.length})
+        </a>
+        {(["interview","analysis","outlook","note"] as const)
+          .filter(k => all.some(p => p.data.type === k))
+          .map(k => (
+            <a
+              href={`/insights/?type=${k}`}
+              class:list={["filter-btn", { active: typeParam === k }]}
+            >
+              {typeLabel[k]} ({all.filter(p => p.data.type === k).length})
+            </a>
+          ))
+        }
+      </div>
+
+      <!-- Cards -->
+      {displayed.length > 0 ? (
+        <div class="insights-list">
+          {displayed.map(p => (
+            <a href={`/insights/${p.slug}/`} class="icard">
+              <div class="icard-left">
+                <div class="icard-meta">
+                  <span class:list={["type-badge", `type-${p.data.type}`]}>
+                    {typeLabel[p.data.type]}
+                  </span>
+                  {p.data.interviewee && (
+                    <span class="label">
+                      {p.data.interviewee}
+                      {p.data.profession && ` · ${p.data.profession}`}
+                    </span>
+                  )}
+                </div>
+                <div class="icard-title">{p.data.title}</div>
+                {p.data.summary && <div class="icard-summary">{p.data.summary}</div>}
+                {p.data.tags?.length > 0 && (
+                  <div class="icard-tags">
+                    {p.data.tags.slice(0, 3).map((t: string) => (
+                      <span class="tag">{t}</span>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <div class="icard-right">
+                <span class="label">{p.data.date.toISOString().slice(0, 10)}</span>
+                <span class="icard-arrow">→</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <div class="empty-state">
+          <div class="empty-icon">✦</div>
+          <p>첫 번째 Insight가 곧 공개됩니다.</p>
+        </div>
+      )}
+
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+.page-header {
+  background: var(--cream);
+  border-bottom: 1px solid var(--bd);
+  padding: 52px 0 40px;
+  position: relative;
+}
+.page-header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--gold) 55%, transparent);
+}
+.ph-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+}
+.page-title {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(22px, 3vw, 30px);
+  color: var(--ink);
+  margin-bottom: 12px;
+}
+.page-lead {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--muted);
+  max-width: 440px;
+}
+.ph-count { text-align: right; flex-shrink: 0; }
+.count-num {
+  font-family: var(--roman);
+  font-size: 36px;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1;
+}
+.count-label {
+  font-family: var(--roman);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--subtle);
+  margin-top: 4px;
+}
+.filter-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 24px 0 20px;
+  border-bottom: 1px solid var(--bd);
+}
+.filter-btn {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--muted);
+  padding: 5px 14px;
+  border: 1px solid var(--bd);
+  border-radius: 100px;
+  text-decoration: none;
+  transition: all 0.13s;
+}
+.filter-btn:hover { background: var(--cream); color: var(--ink); border-color: var(--ink-2); }
+.filter-btn.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+/* Type badge */
+.type-badge {
+  display: inline-block;
+  font-family: var(--roman);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: var(--r);
+  border: 1px solid;
+}
+.type-interview { color: var(--accent);      border-color: var(--accent-light); background: var(--accent-light); }
+.type-analysis  { color: var(--gold);        border-color: var(--gold-light);   background: var(--gold-light); }
+.type-outlook   { color: var(--red);         border-color: #f5e0e0;             background: #f5e0e0; }
+.type-note      { color: var(--muted);       border-color: var(--bd);           background: var(--cream); }
+
+/* List */
+.insights-list {
+  border: 1px solid var(--bd);
+  border-top: none;
+  border-radius: 0 0 var(--r) var(--r);
+  overflow: hidden;
+}
+.icard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 22px 22px 20px;
+  border-bottom: 1px solid var(--bd);
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.13s;
+  position: relative;
+}
+.icard:last-child { border-bottom: none; }
+.icard:hover { background: var(--cream); }
+.icard::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: var(--accent);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.18s ease;
+}
+.icard:hover::before { transform: scaleY(1); }
+.icard-left { display: flex; flex-direction: column; gap: 7px; flex: 1; }
+.icard-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.icard-title {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--ink);
+}
+.icard-summary {
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.65;
+  color: var(--muted);
+  max-width: 560px;
+}
+.icard-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+.icard-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.icard-arrow {
+  font-family: var(--roman);
+  font-size: 18px;
+  color: var(--subtle);
+  transition: color 0.13s, transform 0.13s;
+}
+.icard:hover .icard-arrow { color: var(--accent); transform: translateX(3px); }
+
+.empty-state {
+  text-align: center;
+  padding: 64px 20px;
+  border: 1px dashed var(--bd);
+  border-top: none;
+  border-radius: 0 0 var(--r) var(--r);
+}
+.empty-icon { font-size: 28px; color: var(--subtle); margin-bottom: 12px; }
+.empty-state p { font-size: 14px; font-weight: 300; color: var(--muted); }
+</style>

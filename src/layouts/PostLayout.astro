@@ -1,0 +1,146 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  date: Date;
+  updatedDate?: Date;
+  tags?: string[];
+  type?: string;
+  collection?: string;
+  summary?: string;
+  source?: string;
+}
+
+const { title, description, date, updatedDate, tags = [], type, collection, summary, source } = Astro.props;
+
+const dateStr   = date.toISOString().slice(0, 10);
+const updatedStr = updatedDate ? updatedDate.toISOString().slice(0, 10) : null;
+
+const collectionLabel: Record<string, string> = {
+  research: "리서치",
+  insights: "Insights",
+  notes: "실무노트",
+  library: "자료실",
+};
+const typeLabel = type?.toUpperCase() ?? "";
+---
+<BaseLayout
+  title={title}
+  description={description || summary || ""}
+  ogType="article"
+  publishedTime={date.toISOString()}
+>
+  <Header />
+
+  <main>
+    <!-- Article header -->
+    <div class="post-header">
+      <div class="container-prose">
+        <div class="post-header-inner">
+          <div class="post-meta-top">
+            {collection && (
+              <a href={`/${collection}/`} class="label" style="color: var(--gold); text-decoration: none;">
+                {collectionLabel[collection] ?? collection}
+              </a>
+            )}
+            {typeLabel && <span class="label" style="color: var(--subtle);">·  {typeLabel}</span>}
+          </div>
+
+          <h1 class="post-title">{title}</h1>
+
+          {summary && <p class="post-summary">{summary}</p>}
+
+          <div class="post-meta-row">
+            <span class="label">
+              {dateStr}
+              {updatedStr && updatedStr !== dateStr && ` · 수정 ${updatedStr}`}
+            </span>
+            {tags.length > 0 && (
+              <div class="post-tags">
+                {tags.map(t => <span class="tag">{t}</span>)}
+              </div>
+            )}
+          </div>
+
+          {source && (
+            <div class="post-source">
+              <span class="label" style="color: var(--subtle);">출처 · </span>
+              <span style="font-size: 13px; color: var(--muted);">{source}</span>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+
+    <!-- Article body -->
+    <div class="container-prose" style="padding-top: 40px; padding-bottom: 80px;">
+      <div class="prose">
+        <slot />
+      </div>
+
+      <!-- Back nav -->
+      <div style="margin-top: 60px; padding-top: 28px; border-top: 1px solid var(--bd);">
+        {collection && (
+          <a href={`/${collection}/`} class="btn btn-ghost">
+            ← {collectionLabel[collection] ?? collection} 목록으로
+          </a>
+        )}
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+.post-header {
+  background: var(--cream);
+  border-bottom: 1px solid var(--bd);
+  padding: 52px 0 40px;
+}
+.post-header-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.post-meta-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.post-title {
+  font-family: 'Noto Serif KR', serif;
+  font-weight: 600;
+  font-size: clamp(22px, 3.5vw, 30px);
+  line-height: 1.5;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+.post-summary {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--muted);
+  max-width: 560px;
+}
+.post-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.post-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.post-source {
+  font-size: 12px;
+  padding-top: 4px;
+}
+</style>

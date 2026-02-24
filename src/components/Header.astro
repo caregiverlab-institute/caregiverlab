@@ -1,7 +1,165 @@
 ---
 const nav = [
-  { href: "/research/", label: "리서치" },
-  { href: "/about/", label: "소개" },
-  { href: "/contact/", label: "문의" },
+  { label: "리서치",  href: "/research/" },
+  { label: "Insights", href: "/insights/" },
+  { label: "About",   href: "/about/" },
+  { label: "문의",    href: "/contact/" },
 ];
+
+const path = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === "/" ? path === "/" : path.startsWith(href);
 ---
+<header class="site-header">
+  <div class="header-inner container-wide">
+    <a href="/" class="wordmark" aria-label="간병연구소 홈">
+      <span class="wordmark-kr">간병연구소</span>
+      <span class="wordmark-en">CaregiverLab</span>
+    </a>
+
+    <nav class="site-nav" aria-label="메인 내비게이션">
+      {nav.map(item => (
+        <a
+          href={item.href}
+          class:list={["nav-link", { active: isActive(item.href) }]}
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+
+    <button class="menu-btn" id="menuBtn" aria-label="메뉴 열기" aria-expanded="false">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <rect x="2" y="4.5"  width="16" height="1.5" rx="0.75" fill="currentColor"/>
+        <rect x="2" y="9.25" width="16" height="1.5" rx="0.75" fill="currentColor"/>
+        <rect x="2" y="14"   width="16" height="1.5" rx="0.75" fill="currentColor"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="mobile-nav" id="mobileNav" aria-hidden="true">
+    {nav.map(item => (
+      <a
+        href={item.href}
+        class:list={["mobile-nav-link", { active: isActive(item.href) }]}
+      >
+        {item.label}
+      </a>
+    ))}
+  </div>
+
+  <div class="header-accent" aria-hidden="true"></div>
+</header>
+
+<style>
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--surface);
+  border-bottom: 1px solid var(--bd);
+}
+.header-accent {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent) 0%, var(--gold) 60%, transparent 100%);
+  pointer-events: none;
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  height: 56px;
+}
+.wordmark {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.wordmark-kr {
+  font-family: 'Noto Serif KR', serif;
+  font-weight: 600;
+  font-size: 17px;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.wordmark-en {
+  font-family: 'EB Garamond', serif;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--subtle);
+}
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: auto;
+}
+.nav-link {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--muted);
+  padding: 6px 12px;
+  border-radius: var(--r-md);
+  transition: color 0.14s, background 0.14s;
+  letter-spacing: 0.01em;
+}
+.nav-link:hover { color: var(--ink); background: var(--cream); }
+.nav-link.active { color: var(--ink); font-weight: 500; }
+.nav-link.active::after {
+  content: '•';
+  margin-left: 4px;
+  color: var(--gold);
+  font-size: 10px;
+  vertical-align: middle;
+}
+.menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--ink);
+  padding: 6px;
+  margin-left: auto;
+  border-radius: var(--r-md);
+}
+.mobile-nav {
+  display: none;
+  flex-direction: column;
+  background: var(--surface);
+  border-top: 1px solid var(--bd-light);
+  padding: 8px 0 12px;
+}
+.mobile-nav-link {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--muted);
+  padding: 12px 24px;
+  border-bottom: 1px solid var(--bd-light);
+  transition: color 0.13s, background 0.13s;
+}
+.mobile-nav-link:last-child { border-bottom: none; }
+.mobile-nav-link:hover { color: var(--ink); background: var(--cream); }
+.mobile-nav-link.active { color: var(--ink); font-weight: 500; }
+
+@media (max-width: 640px) {
+  .site-nav  { display: none; }
+  .menu-btn  { display: flex; }
+  .mobile-nav.open { display: flex; }
+}
+</style>
+
+<script>
+const btn = document.getElementById("menuBtn");
+const nav = document.getElementById("mobileNav");
+btn?.addEventListener("click", () => {
+  const open = nav?.classList.toggle("open");
+  btn.setAttribute("aria-expanded", String(open));
+  nav?.setAttribute("aria-hidden", String(!open));
+});
+</script>
