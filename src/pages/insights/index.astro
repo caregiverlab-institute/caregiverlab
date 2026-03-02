@@ -8,10 +8,10 @@ const all = (await getCollection("insights", p => !p.data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
 const typeLabel: Record<string, string> = {
-  interview: "인터뷰",
-  analysis:  "제도 해석",
-  outlook:   "전망",
-  note:      "노트",
+  interview: "전문가 인터뷰",
+  analysis:  "현장 해석",
+  outlook:   "향후 전망",
+  note:      "현장 노트",
 };
 
 const typeParam = Astro.url.searchParams.get("type") ?? "all";
@@ -19,7 +19,7 @@ const displayed = typeParam === "all" ? all : all.filter(p => p.data.type === ty
 ---
 <BaseLayout
   title="Insights — 간병연구소"
-  description="전문가 인터뷰, 제도 해석, 향후 전망. 간병연구소의 독자적 분석을 담습니다."
+  description="간병연구소가 현장에서 직접 수집한 전문가 의견과 독자적 해석을 담습니다."
 >
   <Header />
   <main>
@@ -29,10 +29,10 @@ const displayed = typeParam === "all" ? all : all.filter(p => p.data.type === ty
         <div class="ph-inner">
           <div>
             <div class="eyebrow" style="margin-bottom: 14px;">Insights</div>
-            <h1 class="page-title">인터뷰 · 해석 · 전망</h1>
+            <h1 class="page-title">간병연구소의 현장 인사이트</h1>
             <p class="page-lead">
-              현장 전문가 인터뷰, 제도에 대한 독자적 해석,
-              간병 분야의 향후 전망을 다룹니다.
+              법률·의료 등 각 분야 전문가 인터뷰와<br />
+              간병연구소가 현장 데이터를 바탕으로 직접 정리한 해석을 담습니다.
             </p>
           </div>
           <div class="ph-count">
@@ -100,7 +100,7 @@ const displayed = typeParam === "all" ? all : all.filter(p => p.data.type === ty
       ) : (
         <div class="empty-state">
           <div class="empty-icon">✦</div>
-          <p>첫 번째 Insight가 곧 공개됩니다.</p>
+          <p>전문가 인터뷰와 현장 인사이트가 곧 공개됩니다.</p>
         </div>
       )}
 

@@ -39,13 +39,12 @@ const insightTypeLabel: Record<string, string> = {
           <div class="hero-content">
             <div class="eyebrow">CaregiverLab · Research & Insights</div>
             <h1 class="hero-h1">
-              간병 데이터와 제도 해석을<br />
-              <em>실무가 바로 쓰는 문서</em>로 만듭니다.
+              간병의 기준을 만듭니다.
             </h1>
             <p class="hero-sub">
-              현장 데이터와 제도 분석을 결합해, 간병비·인력·운영 판단에
-              바로 쓸 수 있는 근거를 만듭니다.
-              모든 문서에 출처와 집계 방법을 명시합니다.
+              간병 서비스 이용 과정에서 발생하는 비용 부담, 인력 및 보호자 의사결정 고민에 대해
+              현장에서 축적된 데이터를 바탕으로 참고 가능한 기준을 제시합니다.
+              모든 문서에는 출처와 집계 과정을 명시합니다.
             </p>
             <div class="hero-cta">
               <a href="/research/" class="btn btn-primary">리서치 보기 →</a>
@@ -56,8 +55,8 @@ const insightTypeLabel: Record<string, string> = {
 
           <div class="hero-stats">
             <div class="stat-item">
-              <div class="stat-num">{totalDocs}</div>
-              <div class="stat-label">Publications</div>
+              <div class="stat-num">30+</div>
+              <div class="stat-label">Records</div>
             </div>
             <div class="stat-divider"></div>
             <div class="stat-item">
@@ -80,18 +79,18 @@ const insightTypeLabel: Record<string, string> = {
         <div class="card-strip cols-3">
           <div class="cell">
             <div class="out-num">01</div>
-            <div class="out-title">Research Brief</div>
-            <div class="out-body">현장 데이터·공공 통계 기반의 분석. 출처와 집계 방법 명시</div>
+            <div class="out-title">간병 비용과 데이터 현황</div>
+            <div class="out-body">간병 서비스 이용 과정에서 발생하는 비용 관련 데이터를 현장 기준으로 정리합니다.</div>
           </div>
           <div class="cell">
             <div class="out-num">02</div>
-            <div class="out-title">Expert Interview</div>
-            <div class="out-body">변호사·의사·세무사 등 각계 전문가와의 현장 대담</div>
+            <div class="out-title">전문가 의견</div>
+            <div class="out-body">법률 및 의료 분야 전문가의 의견을 확인하고 현장 적용 가능성을 알아봅니다.</div>
           </div>
           <div class="cell" style="border-right:none;">
             <div class="out-num">03</div>
-            <div class="out-title">Policy Analysis</div>
-            <div class="out-body">간병 관련 제도의 독자적 해석과 향후 방향 전망</div>
+            <div class="out-title">현장 기반 인사이트</div>
+            <div class="out-body">간병 현장에서 축적된 경험을 바탕으로 참고 가능한 해석을 제공합니다.</div>
           </div>
         </div>
       </div>
@@ -101,17 +100,14 @@ const insightTypeLabel: Record<string, string> = {
     <section class="areas-section">
       <div class="container">
         <div class="sec-head">
-          <h2>연구 분야</h2>
-          <span class="label">Research Areas</span>
+          <h2>현장 참고 분야</h2>
+          <span class="label">Field Reference Areas</span>
         </div>
         <div class="areas-grid">
           {[
-            { ko: "간병비 현황",  en: "Cost & Rate",      icon: "₩", desc: "간병인 일당·월급 시세, 병원별·지역별 간병비 실태 집계" },
-            { ko: "간병인 인력",  en: "Workforce",        icon: "人", desc: "간병인 수급 현황, 채용 경로, 계약 조건 분석" },
-            { ko: "법적 보호",    en: "Legal",            icon: "法", desc: "성년후견, 노인복지법, 의료동의 관련 법제도" },
-            { ko: "시설·운영",    en: "Facility & Ops",   icon: "建", desc: "병원·요양원 간병 운영 기준, 간병인 배치 실태" },
-            { ko: "정책·제도",    en: "Policy",           icon: "政", desc: "간병 관련 정책 동향, 제도 변경 사항 분석" },
-            { ko: "데이터·통계",  en: "Data & Stats",     icon: "統", desc: "공공 통계 가공·해석, 간병 현장 실태조사 요약" },
+            { ko: "간병비 현황",      en: "Cost & Rate",  icon: "₩", desc: "간병비 현황을 현장 데이터 기준으로 정리합니다." },
+            { ko: "간병 이용 가이드", en: "Guide",        icon: "政", desc: "간병 서비스 이용 시 알아두면 도움이 되는 정보들을 쉽게 확인할 수 있습니다." },
+            { ko: "현장 데이터 및 통계", en: "Data & Stats", icon: "統", desc: "현장 집계 자료를 바탕으로 간병 관련 통계를 정리합니다." },
           ].map(a => (
             <div class="area-card">
               <div class="area-icon" aria-hidden="true">{a.icon}</div>
@@ -167,7 +163,7 @@ const insightTypeLabel: Record<string, string> = {
             ))}
           </div>
         ) : (
-          <div class="empty-state">전문가 인터뷰와 제도 해석이 곧 공개됩니다.</div>
+          <div class="empty-state">전문가 인터뷰와 현장 인사이트가 곧 공개됩니다.</div>
         )}
       </div>
     </section>
@@ -203,23 +199,23 @@ const insightTypeLabel: Record<string, string> = {
           <div class="cta-watermark" aria-hidden="true">研</div>
           <div class="cta-left">
             <div class="eyebrow" style="color: var(--gold); margin-bottom: 12px;">
-              자료 요청 · 협업 · 제휴
+              Research & Insights
             </div>
-            <h2 class="cta-h2">간병 관련 자료가 필요하신가요?</h2>
+            <h2 class="cta-h2">필요한 정보를 찾아보세요.</h2>
             <p class="cta-body">
-              기사 자문, 기업 컨설팅, 정책 브리핑, 학술 공동연구 등<br />
-              목적에 맞춰 브리프 형태로 정리해 드립니다.
+              간병비 현황, 전문가 의견, 현장 기반 인사이트까지<br />
+              간병 이용 과정에서 참고할 수 있는 자료를 정리했습니다.
             </p>
             <div class="cta-btns">
-              <a href="/contact/" class="btn btn-inv">문의하기 →</a>
-              <a href="/about/" class="btn btn-ghost-inv">About 보기</a>
+              <a href="/research/" class="btn btn-inv">리서치 보기 →</a>
+              <a href="/insights/" class="btn btn-ghost-inv">Insights 보기</a>
             </div>
           </div>
           <div class="cta-right">
             {[
-              { label: "B2B",    desc: "기업·기관 간병 제도 컨설팅, 직원 교육 자료" },
-              { label: "산학협력", desc: "연구자·대학원생 공동연구, 데이터 협의" },
-              { label: "B2G",    desc: "정책 입안 지원, 의회·행정기관 브리핑" },
+              { label: "간병비 현황",    desc: "현장 데이터 기준으로 정리한 비용 정보" },
+              { label: "전문가 의견",    desc: "법률·의료 분야 전문가의 현장 적용 의견" },
+              { label: "현장 인사이트",  desc: "간병 이용 과정에서 참고할 수 있는 기준" },
             ].map(c => (
               <div class="cta-type">
                 <span class="cta-type-label">{c.label}</span>
